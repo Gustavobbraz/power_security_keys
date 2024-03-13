@@ -99,6 +99,6 @@ export default function SignIn() {
 
      resgisterText:{
          backgroundColor:"#a1a1a1"
-     },
+     }
  })
 
