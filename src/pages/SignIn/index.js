@@ -2,7 +2,9 @@ import React from "react";
 import {View, Text, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
 
 import * as Animatable from 'react-native-animatable'
-export default function SignIn() { 
+import {useNavigation} from "@react-navigation/native";
+export default function SignIn() {
+    const navigation = useNavigation();
  return (
     <View style={(styles.container)}>
 
@@ -22,8 +24,9 @@ export default function SignIn() {
                 <Text style={styles.buttonText}> Acessar </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.buttonRegister}>
-                <Text style={styles.registerText}> cadastre-se </Text>
+            <TouchableOpacity style={styles.buttonRegister}
+                              onPress={ () => navigation.navigate('RegistrarUser')}>
+                <Text style={styles.resgisterText}> Ainda nao tem uma conta ? cadastre-se </Text>
             </TouchableOpacity>
 
         </Animatable.View>
@@ -98,7 +101,7 @@ export default function SignIn() {
      },
 
      resgisterText:{
-         backgroundColor:"#a1a1a1"
+         color:"#a1a1a1"
      },
  })
 
