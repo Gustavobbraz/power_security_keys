@@ -110,5 +110,5 @@ const  styles = StyleSheet.create({
 
     resgisterText:{
         color:"#a1a1a1"
-    },
+    }
 })
