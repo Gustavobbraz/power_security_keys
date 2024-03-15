@@ -29,6 +29,11 @@ export default function SignIn() {
                 <Text style={styles.resgisterText}> Ainda nao tem uma conta ? cadastre-se </Text>
             </TouchableOpacity>
 
+            <TouchableOpacity style={styles.button}
+                              onPress={ () => navigation.navigate('Menu')}>
+                <Text style={styles.buttonText}> Teste abrir Menu </Text>
+            </TouchableOpacity>
+
         </Animatable.View>
 
     </View>
