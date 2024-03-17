@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "power_security_keys",
-    "slug": "power_security_keys",
+    "slug": "power-security-keys",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,7 +15,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "y"
     },
     "android": {
       "adaptiveIcon": {
@@ -29,8 +30,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "bf047148-2afb-4e22-80ec-f8ce26ea3c2a"
+        "projectId": "b294f775-a8c4-41d1-9256-96cc0406f493"
       }
-    }
+    },
+    "owner": "darkinphantom"
   }
 }

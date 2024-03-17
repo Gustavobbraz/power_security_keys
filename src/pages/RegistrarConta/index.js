@@ -1,15 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import {View, Text, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
+import { Picker } from "@react-native-picker/picker";
 
 import * as Animatable from 'react-native-animatable'
 import {useNavigation} from "@react-navigation/native";
-export default function SignIn() {
+export default function RegistrarConta() {
     const navigation = useNavigation();
+    const [selectedOption, setSelectedOption] = useState('');
+    const [showSpecificText, setShowSpecificText] = useState(false);
+
+    const handleOptionChange = (itemValue) => {
+        setSelectedOption(itemValue);
+        // Verificar se a opção selecionada é a que deve mostrar o texto específico
+        setShowSpecificText(itemValue === 'CriarNovo');
+      };
  return (
     <View style={(styles.container)}>
 
         <Animatable.View  animation="fadeInLeft" delay={500} style={styles.containerHeader}>
-            <Text style={styles.message}>Bem-vindo(a)</Text>
+            <Text style={styles.message}>Registrar Conta</Text>
 
         </Animatable.View>
 
@@ -20,18 +29,30 @@ export default function SignIn() {
             <Text style={styles.title}>Senha</Text>
             <TextInput placeholder="Digite sua senha" style={styles.input}/>
 
+            <Text style={styles.title}>Adicionar Grupo</Text>
+            <TextInput placeholder="Novo Grupo" style={styles.input}/>
+
+            <Text style={styles.title}> Grupos Existentes</Text>
+            <Picker
+                selectedValue={selectedOption}
+                onValueChange={(itemValue) => handleOptionChange(itemValue)}
+            >
+                
+                <Picker.Item label="Criar Grupo" value="CriarNovo" />
+                <Picker.Item label="Opção 1" value="opcao1" />
+                <Picker.Item label="Opção 2" value="opcao2" />
+                <Picker.Item label="Opção 3" value="opcao3" />
+            </Picker>
+
+            {showSpecificText && ( 
+            <View>
+                <Text style={styles.title}>Adicionar Grupo</Text>
+                <TextInput placeholder="Novo Grupo" style={styles.input}/>
+                </View>
+            )}
+
             <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}> Acessar </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.buttonRegister}
-                              onPress={ () => navigation.navigate('RegistrarUser')}>
-                <Text style={styles.resgisterText}> Ainda nao tem uma conta ? cadastre-se </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.button}
-                              onPress={ () => navigation.navigate('Menu')}>
-                <Text style={styles.buttonText}> Teste abrir Menu </Text>
+                <Text style={styles.buttonText}> Adicionar Conta </Text>
             </TouchableOpacity>
 
         </Animatable.View>
@@ -49,13 +70,13 @@ export default function SignIn() {
      },
 
      containerHeader:{
-         marginTop:"14%",
-         marginBottom:"8%",
+         marginTop:"2%",
+         marginBottom:"4%",
          paddingStart:"5%",
      },
 
      message:{
-         fontSize:28,
+         fontSize:26,
          fontWeight:"bold",
          color:"#FFF",
      },
