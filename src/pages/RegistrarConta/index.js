@@ -29,9 +29,6 @@ export default function RegistrarConta() {
             <Text style={styles.title}>Senha</Text>
             <TextInput placeholder="Digite sua senha" style={styles.input}/>
 
-            <Text style={styles.title}>Adicionar Grupo</Text>
-            <TextInput placeholder="Novo Grupo" style={styles.input}/>
-
             <Text style={styles.title}> Grupos Existentes</Text>
             <Picker
                 selectedValue={selectedOption}
