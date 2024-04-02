@@ -23,6 +23,10 @@ export default function RegistrarConta() {
         </Animatable.View>
 
         <Animatable.View  animation="fadeInUp"  style={styles.containerForm}>
+
+            <Text style={styles.title}>Serviço</Text>
+            <TextInput placeholder="Digite um serviço. Ex: Steam, Facebook" style={styles.input}/>
+            
             <Text style={styles.title}>Usuario ou E-mail</Text>
             <TextInput placeholder="Digite um usuario ou e-mail" style={styles.input}/>
 
