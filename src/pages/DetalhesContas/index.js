@@ -1,69 +1,60 @@
-import React from "react";
-import { useNavigation } from "@react-navigation/native";
-import { FlatList, Text, TouchableOpacity, View, StyleSheet } from "react-native";
+// Importe as bibliotecas necessárias
+import React, { useEffect, useState } from 'react';
+import { View, FlatList, Text } from 'react-native';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function DetalhesContas(){
-    const navigation = useNavigation();
+// Componente de tela para exibir os detalhes da conta
+const DetalhesDaConta = () => {
+  // Defina um estado para armazenar os detalhes da conta
+  const [detalhesDaConta, setDetalhesDaConta] = useState([]);
 
-    const data = [
-        { id:'1', title: 'Item 1'},
-        { id:'2', title: 'Item 2'},
-        { id:'3', title: 'Item 3'},
-        { id:'4', title: 'Item 4'},
-    ];
+  // Função para buscar os detalhes da conta da API
+  const buscarDetalhesDaConta = async () => {
+    try {
+      // Obtenha o token armazenado localmente
+      const token = await AsyncStorage.getItem('token');
+      
+      // Verifique se o token está sendo recebido corretamente
+      console.log('Token recebido em DetalhesDaConta:', token);
+  
+      // Faça uma solicitação à API usando o token
+      const resposta = await axios.get('http://localhost:8080/product', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+  
+      // Atualize o estado com os detalhes da conta recebidos da API
+      setDetalhesDaConta(resposta.data);
+    } catch (erro) {
+      console.error('Erro ao buscar detalhes da conta:', erro);
+    }
+  };
 
-    const renderItem = ({ item }) => (
-        <TouchableOpacity onPress={() => handleItemClick(item.id)} style={styles.listItem}>
-            <Text style={styles.textTitle}>{item.title}</Text>
-        </TouchableOpacity>
-    );
+  // Use useEffect para buscar os detalhes da conta quando o componente for montado
+  useEffect(() => {
+    buscarDetalhesDaConta();
+  }, []); // O segundo argumento [] garante que useEffect seja chamado apenas uma vez
 
-    const handleItemClick = (itemId) => {
-        console.log("Item clicado: ", itemId);
-        navigation.navigate('DetalheServico', { itemId: itemId});
-    };
+  // Função para renderizar cada item na FlatList
+  const renderItem = ({ item }) => (
+    <View>
+      <Text>Nome: {item.name}</Text>
+      <Text>Email: {item.email}</Text>
+      <Text>Senha: {item.senha}</Text>
+    </View>
+  );
 
+  return (
+    <View>
+      <FlatList
+        data={detalhesDaConta}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+      />
+    </View>
+  );
+};
 
-    return(
-        <View styles={styles.container}>
-
-            <View style={styles.list}>
-                <FlatList
-                data={data}
-                renderItem={renderItem}
-                keyExtractor={item => item.id}
-                numColumns={1}
-                />
-            </View>
-
-        </View>
-        
-    );
-}
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor:'#fff',
-    },
-    list: {
-        marginTop:"10%",
-        paddingStart:"10%",
-        paddingEnd:"10%",
-    },
-    listItem: {
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flex:1,
-        margin:10,
-        bottom:10,
-        height:60,
-        borderWidth:2,
-        borderRadius:20,
-    },
-    textTitle: {
-        fontSize: 22,
-    },
-
-});
+export default DetalhesDaConta;
