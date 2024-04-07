@@ -1,10 +1,40 @@
-import React from "react";
-import {View, Text, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
+import React, { useState } from "react";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert} from 'react-native';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 import * as Animatable from 'react-native-animatable'
 import {useNavigation} from "@react-navigation/native";
+
 export default function SignIn() {
+
     const navigation = useNavigation();
+    const [usuario, setUsuario] = useState('');
+    const [senha, setSenha] = useState('');
+
+    const fazerlogin = async () => {
+        try {
+            const resposta = await axios.post('http://localhost:8080/auth/login',{
+                login:usuario,
+                password: senha
+            });
+
+            const token = resposta.data.token;
+            //guardar token e navegar para outra tela se deu certo
+            console.log('Token recebido sing in:', token); // Adicione esta linha para imprimir o token
+
+            // Armazenar o token localmente
+            await AsyncStorage.setItem('token', token);
+
+            // Navegar para a próxima página ou fazer outras ações após o login bem-sucedido
+            navigation.navigate('DetalhesDaConta');
+
+        } catch (error) {
+            console.error('Erro ao fazer login',error);
+            Alert.alert('Erro','Erro ao fazer login. Verifique suas credenciais e tente novamente.');
+        }
+    }
  return (
     <View style={(styles.container)}>
 
@@ -14,13 +44,25 @@ export default function SignIn() {
         </Animatable.View>
 
         <Animatable.View  animation="fadeInUp"  style={styles.containerForm}>
-            <Text style={styles.title}>Usuario ou E-mail</Text>
-            <TextInput placeholder="Digite um usuario ou e-mail" style={styles.input}/>
+            <Text style={styles.title}>Usuario</Text>
+
+            <TextInput 
+                placeholder="Digite um usuario" 
+                style={styles.input}
+                onChangeText={text => setUsuario(text)}
+                value={usuario}
+                />
 
             <Text style={styles.title}>Senha</Text>
-            <TextInput placeholder="Digite sua senha" style={styles.input}/>
+            <TextInput 
+                placeholder="Digite sua senha" 
+                style={styles.input}
+                onChangeText={text => setSenha(text)}
+                value={senha}
+                secureTextEntry={true}
+            />
 
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={fazerlogin}>
                 <Text style={styles.buttonText}> Acessar </Text>
             </TouchableOpacity>
 
@@ -29,11 +71,7 @@ export default function SignIn() {
                 <Text style={styles.resgisterText}> Ainda nao tem uma conta ? cadastre-se </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.button}
-                              onPress={ () => navigation.navigate('Menu')}>
-                <Text style={styles.buttonText}> Teste abrir Menu </Text>
-            </TouchableOpacity>
-
+            
         </Animatable.View>
 
     </View>

@@ -1,29 +1,38 @@
-import React, { useState } from "react";
-import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
-
+import React, { useEffect, useState } from "react";
+import {View, Text, StyleSheet, FlatList, TouchableOpacity, Alert} from 'react-native';
+import axios from 'axios';
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export default function Menu(){
-    const navigation = useNavigation();
-
-    const [mensagem, setMensagem] = useState('');
-    const handlePressIn = () => {
-        setMensagem('Registrar conta e senha');
+  const navigation = useNavigation();
+  const [items, setItems] = useState('');
+  
+  useEffect(() => {
+    //Função para carregar os itens da API
+    const carregarItens = async () => {
+      try { 
+        const token = await AsyncStorage.getItem('token');
+        const resposta = await axios.get('http://192.168.0.38:8080/product', {
+          headers: {
+            Authorization: 'Bearer ${token}'
+          }
+        });
+        setItems(resposta.data.map(item => ({id: item.id, name:item.name , email:item.email, senha:item.senha})));
+      } catch (error) {
+        console.error('Erro ao carregar lista:',error);
+        Alert.alert('Erro', 'Erro ao carregar lista. Tente novamente mais tarde.');
+      }
     };
+    carregarItens();
 
-    const handlePressOut = () => {
-      setMensagem('');
-  };
-
-  const data = [
-    { id: '1', title: 'Item 1' },
-    { id: '2', title: 'Item 2' },
-    { id: '3', title: 'Item 3' },
-    { id: '4', title: 'Item 4' },
-  ];
+  }, []);
 
   const renderItem = ({ item }) => (
     <TouchableOpacity onPress={() => handleItemClick(item.id)} style={styles.listItem}>
-      <Text>{item.title}</Text>
+      <Text>{item.name}</Text>
+      <Text>{item.email}</Text>
+      <Text>{item.senha}</Text>
     </TouchableOpacity>
   );
 
@@ -32,7 +41,7 @@ export default function Menu(){
     console.log("Item clicado: ", itemId);
     // Adicionar a navegação depois
     // navigation.navigate('Detalhes', { itemId: itemId });
-    navigation.navigate('DetalhesContas', { itemId: itemId });
+    navigation.navigate('DetalhesDaConta', { itemId: itemId });
   };
   
   return(
@@ -43,20 +52,17 @@ export default function Menu(){
 
          {/* Botão no canto superior direito */}
          <TouchableOpacity style={styles.button}
-            onPressIn={handlePressIn}
-            onPressOut={handlePressOut}
             onPress={ () => navigation.navigate('RegistrarConta')}>
             <Text style={styles.buttonText}>+</Text>
           </TouchableOpacity>
         </View>
-          <Text style={styles.messageButton}>{mensagem}</Text>
         
           <View style={styles.list}>
             <FlatList
-            data={data}
+            data={items}
             renderItem={renderItem}
             keyExtractor={item => item.id}
-            numColumns={2}
+            numColumns={1}
             />
         </View>
     </View>

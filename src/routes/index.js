@@ -5,7 +5,7 @@ import SignIn from "../pages/SignIn";
 import RegistrarUser from "../pages/RegistrarUser";
 import Menu from '../pages/Menu';
 import RegistrarConta from '../pages/RegistrarConta';
-import DetalhesContas from '../pages/DetalhesContas';
+import DetalhesDaConta from "../pages/DetalhesContas";
 import DetalheServico from "../pages/DetalheServico";
 
 
@@ -45,8 +45,8 @@ export default function Routes(){
            />
 
             <Stack.Screen
-               name="DetalhesContas"
-               component={DetalhesContas}
+               name="DetalhesDaConta"
+               component={DetalhesDaConta}
                options={{ headerShown: false }}
            />
 
