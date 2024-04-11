@@ -1,6 +1,7 @@
 // Importe as bibliotecas necessárias
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, Text } from 'react-native';
+import { View, FlatList, Text, Button } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -8,6 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const DetalhesDaConta = () => {
   // Defina um estado para armazenar os detalhes da conta
   const [detalhesDaConta, setDetalhesDaConta] = useState([]);
+  const navigation = useNavigation();
 
   // Função para buscar os detalhes da conta da API
   const buscarDetalhesDaConta = async () => {
@@ -19,7 +21,7 @@ const DetalhesDaConta = () => {
       console.log('Token recebido em DetalhesDaConta:', token);
   
       // Faça uma solicitação à API usando o token
-      const resposta = await axios.get('http://localhost:8080/product', {
+      const resposta = await axios.get('http://192.168.0.38:8080/product', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -37,6 +39,12 @@ const DetalhesDaConta = () => {
     buscarDetalhesDaConta();
   }, []); // O segundo argumento [] garante que useEffect seja chamado apenas uma vez
 
+
+  const handleNavigate = () => {
+    // Navegar para outra página quando o botão for clicado
+    navigation.navigate('CriarItem');
+  };
+
   // Função para renderizar cada item na FlatList
   const renderItem = ({ item }) => (
     <View>
@@ -46,8 +54,11 @@ const DetalhesDaConta = () => {
     </View>
   );
 
+
+
   return (
     <View>
+      <Button title='+' onPress={handleNavigate}/>
       <FlatList
         data={detalhesDaConta}
         renderItem={renderItem}

@@ -15,7 +15,7 @@ export default function SignIn() {
 
     const fazerlogin = async () => {
         try {
-            const resposta = await axios.post('http://localhost:8080/auth/login',{
+            const resposta = await axios.post('http://192.168.0.38:8080/auth/login',{
                 login:usuario,
                 password: senha
             });
