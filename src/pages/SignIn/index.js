@@ -20,12 +20,13 @@ export default function SignIn() {
                 password: senha
             });
 
-            const token = resposta.data.token;
+            const { token,nome } = resposta.data;
             //guardar token e navegar para outra tela se deu certo
             console.log('Token recebido sing in:', token); // Adicione esta linha para imprimir o token
 
             // Armazenar o token localmente
             await AsyncStorage.setItem('token', token);
+            await AsyncStorage.setItem('nome', nome);
 
             // Navegar para a próxima página ou fazer outras ações após o login bem-sucedido
             navigation.navigate('DetalhesDaConta');

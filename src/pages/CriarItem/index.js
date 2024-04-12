@@ -42,7 +42,7 @@ export default function CriarItem() {
 
             //Logica após o envio bem-sucedido (navegação, etc.)
             console.log('Dados enviados com sucesso:', resposta.data);
-            navigation.navigate('DetalhesDaConta');
+            navigation.navigate('DetalhesDaConta', { refresh: true });
         } catch (error) {
             console.error('Erro ao enviar dados:', error);
             Alert.alert('Erro','Erro ao enviar dados. Verifique e tente novamente.');
