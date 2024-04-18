@@ -1,9 +1,9 @@
 // Importe as bibliotecas necessárias
-import React, { useEffect, useState } from 'react';
-import { View, FlatList, Text, Button } from 'react-native';
-import { useNavigation, useIsFocused } from '@react-navigation/native';
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Button, FlatList, Text, View } from 'react-native';
 
 // Componente de tela para exibir os detalhes da conta
 const DetalhesDaConta = () => {
@@ -24,7 +24,7 @@ const DetalhesDaConta = () => {
       console.log('Token recebido em DetalhesDaConta:', token);
   
       // Faça uma solicitação à API usando o token
-      const resposta = await axios.get('http://192.168.0.38:8080/product', {
+      const resposta = await axios.get('http://10.182.6.17:8081/product', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -53,7 +53,7 @@ const DetalhesDaConta = () => {
     try {
       const token = await AsyncStorage.getItem('token');
   
-      await axios.delete(`http://192.168.0.38:8080/product/${id}`, {
+      await axios.delete(`http://10.182.6.17:8081/product/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -73,10 +73,12 @@ const DetalhesDaConta = () => {
       <Text>Nome: {item.name}</Text>
       <Text>Email: {item.email}</Text>
       <Text>Senha: {item.senha}</Text>
+      <Text>Grupo: {item.grupo}</Text>
+
+
       <Button title="Excluir" onPress={() => handleExcluirItem(item.id)} />
     </View>
   );
-
 
 
   return (
@@ -90,6 +92,7 @@ const DetalhesDaConta = () => {
       />
     </View>
   );
+
 };
 
 export default DetalhesDaConta;

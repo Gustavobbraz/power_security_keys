@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import {View, Text, StyleSheet, FlatList, TouchableOpacity, Alert} from 'react-native';
-import axios from 'axios';
-import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from "@react-navigation/native";
+import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function Menu(){
   const navigation = useNavigation();
@@ -13,12 +13,12 @@ export default function Menu(){
     const carregarItens = async () => {
       try { 
         const token = await AsyncStorage.getItem('token');
-        const resposta = await axios.get('http://192.168.0.38:8080/product', {
+        const resposta = await axios.get('http://192.168.0.38:8081/product', {
           headers: {
             Authorization: 'Bearer ${token}'
           }
         });
-        setItems(resposta.data.map(item => ({id: item.id, name:item.name , email:item.email, senha:item.senha})));
+        setItems(resposta.data.map(item => ({id: item.id, name:item.name , email:item.email, senha:item.senha, grupo:item.grupo})));
       } catch (error) {
         console.error('Erro ao carregar lista:',error);
         Alert.alert('Erro', 'Erro ao carregar lista. Tente novamente mais tarde.');
@@ -33,6 +33,7 @@ export default function Menu(){
       <Text>{item.name}</Text>
       <Text>{item.email}</Text>
       <Text>{item.senha}</Text>
+      
     </TouchableOpacity>
   );
 

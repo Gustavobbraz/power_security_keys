@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import {View, Text, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
 import { Picker } from "@react-native-picker/picker";
+import React, { useState } from "react";
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-import * as Animatable from 'react-native-animatable'
-import {useNavigation} from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
+import * as Animatable from 'react-native-animatable';
 export default function RegistrarConta() {
     const navigation = useNavigation();
     const [selectedOption, setSelectedOption] = useState('');
@@ -32,6 +32,8 @@ export default function RegistrarConta() {
 
             <Text style={styles.title}>Senha</Text>
             <TextInput placeholder="Digite sua senha" style={styles.input}/>
+
+            
 
             <Text style={styles.title}> Grupos Existentes</Text>
             <Picker

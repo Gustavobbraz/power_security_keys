@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert} from 'react-native';
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import React, { useState } from "react";
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 
-import * as Animatable from 'react-native-animatable'
-import {useNavigation} from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
+import * as Animatable from 'react-native-animatable';
 
 export default function SignIn() {
 
@@ -15,7 +15,7 @@ export default function SignIn() {
 
     const fazerlogin = async () => {
         try {
-            const resposta = await axios.post('http://192.168.0.38:8080/auth/login',{
+            const resposta = await axios.post('http://10.182.6.17:8081/auth/login',{
                 login:usuario,
                 password: senha
             });

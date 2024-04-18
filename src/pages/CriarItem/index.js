@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { View, Text, Button, TextInput, Alert } from "react-native";
-import {useNavigation} from "@react-navigation/native";
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from "@react-navigation/native";
+import axios from 'axios';
+import React, { useState } from "react";
+import { Alert, Button, Text, TextInput, View } from "react-native";
 
 export default function CriarItem() {
     const navigation = useNavigation();
@@ -10,6 +10,7 @@ export default function CriarItem() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
+    const [grupo, setGrupo] = useState('');
 
     const handleName = (text) =>{
         setName(text);
@@ -23,6 +24,10 @@ export default function CriarItem() {
         setSenha(text);
     };
 
+    const handleGrupo = (text) =>{
+        setGrupo(text);
+    };
+
     const handleSubmit = async () => {
         try {
             //Recuperar o token armazenado localmente
@@ -30,10 +35,11 @@ export default function CriarItem() {
             console.log("token no Criar:", token)
 
             //Enviar os dados para a lista de API com autenticação
-            const resposta = await axios.post('http://192.168.0.38:8080/product', {
+            const resposta = await axios.post('http://10.182.6.17:8081/product', {
                 name:name,
                 email:email,
-                senha:senha
+                senha:senha,
+                grupo:grupo
             }, {
                 headers:{
                     Authorization: `Bearer ${token}`
@@ -69,6 +75,12 @@ export default function CriarItem() {
             <TextInput
                 value={senha}
                 onChangeText={handleSenha}
+            />
+
+            <Text>Grupo: </Text>
+            <TextInput
+                value={grupo}
+                onChangeText={handleGrupo}
             />
             <Button title="Enviar" onPress={handleSubmit}/>
         </View>
