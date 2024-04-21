@@ -15,7 +15,7 @@ export default function SignIn() {
 
     const fazerlogin = async () => {
         try {
-            const resposta = await axios.post('http://10.182.6.17:8081/auth/login',{
+            const resposta = await axios.post('http://192.168.0.34:8081/auth/login',{
                 login:usuario,
                 password: senha
             });

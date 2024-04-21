@@ -24,7 +24,7 @@ const DetalhesDaConta = () => {
       console.log('Token recebido em DetalhesDaConta:', token);
   
       // Faça uma solicitação à API usando o token
-      const resposta = await axios.get('http://10.182.6.17:8081/product', {
+      const resposta = await axios.get('http://192.168.0.34:8081/product', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -49,11 +49,17 @@ const DetalhesDaConta = () => {
     navigation.navigate('CriarItem');
   };
 
+  const handleAtualizarServico = (item, token) => { // Adicione 'token' como um parâmetro aqui
+    // Navegar para a página 'DetalhesDoItem' e passar os detalhes do item e o token como parâmetros
+    navigation.navigate('AtualizarServico', { item, token });
+  };
+
+
   const handleExcluirItem = async (id) => {
     try {
       const token = await AsyncStorage.getItem('token');
   
-      await axios.delete(`http://10.182.6.17:8081/product/${id}`, {
+      await axios.delete(`http://192.168.0.34:8081/product/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -75,7 +81,7 @@ const DetalhesDaConta = () => {
       <Text>Senha: {item.senha}</Text>
       <Text>Grupo: {item.grupo}</Text>
 
-
+      <Button title="Editar" onPress={() => handleAtualizarServico(item)} />
       <Button title="Excluir" onPress={() => handleExcluirItem(item.id)} />
     </View>
   );

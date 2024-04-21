@@ -8,6 +8,7 @@ import RegistrarConta from '../pages/RegistrarConta';
 import DetalhesDaConta from "../pages/DetalhesContas";
 import DetalheServico from "../pages/DetalheServico";
 import CriarItem from "../pages/CriarItem";
+import AtualizarServico from "../pages/AtualizarServico";
 
 
 const Stack =  createNativeStackNavigator();
@@ -60,6 +61,12 @@ export default function Routes(){
             <Stack.Screen
                name="CriarItem"
                component={CriarItem}
+               options={{ headerShown: false }}
+           />
+
+            <Stack.Screen
+               name="AtualizarServico"
+               component={AtualizarServico}
                options={{ headerShown: false }}
            />
             
