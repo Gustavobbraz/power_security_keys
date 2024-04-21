@@ -13,7 +13,7 @@ export default function Menu(){
     const carregarItens = async () => {
       try { 
         const token = await AsyncStorage.getItem('token');
-        const resposta = await axios.get('http://192.168.0.38:8081/product', {
+        const resposta = await axios.get('http://192.168.0.34:8081/product', {
           headers: {
             Authorization: 'Bearer ${token}'
           }

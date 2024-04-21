@@ -19,7 +19,7 @@ export default function RegistrarUser() {
     }
 
     // Enviar os dados para a API
-    axios.post("http://10.182.6.17:8081/auth/register", {
+    axios.post("http://192.168.0.34:8081/auth/register", {
       nome: nome,
       login: login,
       password: password,
