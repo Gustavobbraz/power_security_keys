@@ -1,36 +1,28 @@
-// Importe as bibliotecas necessárias
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Button, FlatList, Text, View } from 'react-native';
+import { Button, FlatList, Text, View, StyleSheet } from 'react-native';
 
-// Componente de tela para exibir os detalhes da conta
 const DetalhesDaConta = () => {
-  // Defina um estado para armazenar os detalhes da conta
   const [detalhesDaConta, setDetalhesDaConta] = useState([]);
   const [nomeUsuario, setNomeUsuario] = useState('');
   const navigation = useNavigation();
   const isFocused = useIsFocused();
 
-  // Função para buscar os detalhes da conta da API
   const buscarDetalhesDaConta = async () => {
     try {
-      // Obtenha o token armazenado localmente
       const token = await AsyncStorage.getItem('token');
       const nome = await AsyncStorage.getItem('nome');
       
-      // Verifique se o token está sendo recebido corretamente
       console.log('Token recebido em DetalhesDaConta:', token);
   
-      // Faça uma solicitação à API usando o token
       const resposta = await axios.get('http://192.168.0.34:8081/product', {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
   
-      // Atualize o estado com os detalhes da conta recebidos da API
       setDetalhesDaConta(resposta.data);
       setNomeUsuario(nome);
     } catch (erro) {
@@ -38,22 +30,17 @@ const DetalhesDaConta = () => {
     }
   };
 
-  // Use useEffect para buscar os detalhes da conta quando o componente for montado
   useEffect(() => {
     buscarDetalhesDaConta();
-  }, [isFocused]); // O segundo argumento [] garante que useEffect seja chamado apenas uma vez
-
+  }, [isFocused]);
 
   const handleNavigate = () => {
-    // Navegar para outra página quando o botão for clicado
     navigation.navigate('CriarItem');
   };
 
-  const handleAtualizarServico = (item, token) => { // Adicione 'token' como um parâmetro aqui
-    // Navegar para a página 'DetalhesDoItem' e passar os detalhes do item e o token como parâmetros
+  const handleAtualizarServico = (item, token) => {
     navigation.navigate('AtualizarServico', { item, token });
   };
-
 
   const handleExcluirItem = async (id) => {
     try {
@@ -65,17 +52,14 @@ const DetalhesDaConta = () => {
         }
       });
   
-      //Atualiza a lista após a exclusão
       buscarDetalhesDaConta();
     } catch (erro) {
       console.error('Erro ao excluir o item: ', erro);
     }
   };
-  
 
-  // Função para renderizar cada item na FlatList
   const renderItem = ({ item }) => (
-    <View>
+    <View style={styles.item}>
       <Text>Nome: {item.name}</Text>
       <Text>Email: {item.email}</Text>
       <Text>Senha: {item.senha}</Text>
@@ -86,19 +70,62 @@ const DetalhesDaConta = () => {
     </View>
   );
 
+  // Agrupar itens pelo nome do grupo
+  const groupedItems = detalhesDaConta.reduce((acc, currentItem) => {
+    if (!acc[currentItem.grupo]) {
+      acc[currentItem.grupo] = [];
+    }
+    acc[currentItem.grupo].push(currentItem);
+    return acc;
+  }, {});
+
+  const renderGroupedItems = () => {
+    return Object.keys(groupedItems).map(grupo => (
+      <View key={grupo} style={styles.groupContainer}>
+        <Text style={styles.groupTitle}>{grupo}</Text>
+        <View style={styles.box}>
+          <FlatList
+            data={groupedItems[grupo]}
+            renderItem={renderItem}
+            keyExtractor={item => item.id.toString()}
+          />
+        </View>
+      </View>
+    ));
+  };
 
   return (
-    <View>
+    <View style={styles.container}>
       <Text>Bem-vindo(a): {nomeUsuario}</Text>
       <Button title='+' onPress={handleNavigate}/>
-      <FlatList
-        data={detalhesDaConta}
-        renderItem={renderItem}
-        keyExtractor={item => item.id.toString()}
-      />
+      {renderGroupedItems()}
     </View>
   );
 
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 10,
+  },
+  groupContainer: {
+    marginBottom: 20,
+  },
+  groupTitle: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    marginBottom: 10,
+  },
+  box: {
+    borderWidth: 1,
+    borderColor: 'black',
+    borderRadius: 5,
+    padding: 10,
+  },
+  item: {
+    marginBottom: 10,
+  },
+});
 
 export default DetalhesDaConta;
