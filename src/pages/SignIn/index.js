@@ -72,6 +72,11 @@ export default function SignIn() {
                 <Text style={styles.resgisterText}> Ainda nao tem uma conta ? cadastre-se </Text>
             </TouchableOpacity>
 
+            <TouchableOpacity style={styles.buttonRegister}
+                              onPress={ () => navigation.navigate('DetalhesDaConta')}>
+                <Text style={styles.resgisterText}> DetalhesContas </Text>
+            </TouchableOpacity>
+
             
         </Animatable.View>
 
