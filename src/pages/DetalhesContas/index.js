@@ -17,7 +17,7 @@ const DetalhesDaConta = () => {
       
       console.log('Token recebido em DetalhesDaConta:', token);
   
-      const resposta = await axios.get('http://192.168.0.34:8081/product', {
+      const resposta = await axios.get('http://ec2-3-88-108-42.compute-1.amazonaws.com:8081/product', {
         headers: {
           Authorization: `Bearer ${token}`
         }

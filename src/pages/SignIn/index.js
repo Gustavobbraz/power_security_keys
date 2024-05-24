@@ -15,10 +15,10 @@ export default function SignIn() {
 
     const fazerlogin = async () => {
         try {
-            const resposta = await axios.post('http://192.168.0.34:8081/auth/login',{
+            const resposta = await axios.post('http://ec2-3-88-108-42.compute-1.amazonaws.com:8081/auth/login',{
                 login:usuario,
                 password: senha
-            });
+            });  
 
             const { token,nome } = resposta.data;
             //guardar token e navegar para outra tela se deu certo

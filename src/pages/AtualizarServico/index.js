@@ -24,7 +24,7 @@ const AtualizarServico = ({ route }) => {
 
       console.log("ID do item:", item.id);
       //Fazendo uma solicitação à API para atualizar os dados
-      const resposta = await axios.put(`http://192.168.0.34:8081/product/${item.id}`, updatedData, {
+      const resposta = await axios.put(`http://ec2-3-88-108-42.compute-1.amazonaws.com:8081/product/${item.id}`, updatedData, {
         headers: {
           Authorization: `Bearer ${token}`
         }
