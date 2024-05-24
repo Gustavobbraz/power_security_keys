@@ -46,7 +46,7 @@ const DetalhesDaConta = () => {
     try {
       const token = await AsyncStorage.getItem('token');
   
-      await axios.delete(`http://192.168.0.34:8081/product/${id}`, {
+      await axios.delete(`http://ec2-3-88-108-42.compute-1.amazonaws.com:8081/product/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

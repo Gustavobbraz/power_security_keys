@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from "@react-navigation/native";
 import axios from 'axios';
 import React, { useState } from "react";
-import { Alert, Button, Text, TextInput, View } from "react-native";
+import { Alert, Button, Text, TextInput, View,StyleSheet, TouchableOpacity } from "react-native";
 
 export default function CriarItem() {
     const navigation = useNavigation();
@@ -57,33 +57,72 @@ export default function CriarItem() {
 
 
     return(
-        <View>
-            <Text>Serviço: </Text>
+        <View style={styles.box}>
+            <Text style={styles.Text}>Serviço: </Text>
             <TextInput
+                style={styles.TextBox}
                 placeholder="Ex: Steam, Facebook..."
                 value={name}
                 onChangeText={handleName}
             />
 
-            <Text>Usuário ou E-mail:</Text>
+            <Text style={styles.Text}>Usuário ou E-mail:</Text>
             <TextInput
+                style={styles.TextBox}
                 value={email}
                 onChangeText={handleEmail}
             />
             
-            <Text>Senha: </Text>
+            <Text style={styles.Text}>Senha: </Text>
             <TextInput
+                style={styles.TextBox}
                 value={senha}
                 onChangeText={handleSenha}
             />
 
-            <Text>Grupo: </Text>
+            <Text style={styles.Text}>Grupo: </Text>
             <TextInput
+                style={styles.TextBoxBottom}
                 value={grupo}
                 onChangeText={handleGrupo}
             />
-            <Button title="Enviar" onPress={handleSubmit}/>
+            <Button 
+                style={styles.Button}
+                title="Enviar" 
+                onPress={handleSubmit}/>
         </View>
     );
 
 };
+
+const styles = StyleSheet.create({
+
+    box: {
+        borderWidth: 3,
+        borderColor: 'black',
+        borderRadius: 5,
+        padding: 10,
+        margin:2,
+      },
+      TextBox: {
+        borderWidth: 2,
+        borderColor: 'black',
+        borderRadius: 5,
+        padding: 3,
+      },
+    Text:{
+        fontWeight:"bold"
+    },
+    TextBoxBottom:{
+        fontWeight:"bold",
+        borderWidth: 2,
+        borderColor: 'black',
+        borderRadius: 5,
+        padding: 3,
+        marginBottom: 10,
+
+    },
+    Button:{
+        padding: 10,
+    },
+});
