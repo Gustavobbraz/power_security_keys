@@ -22,7 +22,7 @@ export default function SignIn() {
 
             const { token,nome } = resposta.data;
             //guardar token e navegar para outra tela se deu certo
-            console.log('Token recebido sing in:', token); // Adicione esta linha para imprimir o token
+            console.log('Token recebido sing in:', token); // Adicione esta linha para imprimir o token.
 
             // Armazenar o token localmente
             await AsyncStorage.setItem('token', token);
