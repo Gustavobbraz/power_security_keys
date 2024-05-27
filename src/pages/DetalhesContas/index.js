@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Button, FlatList, Text, View, StyleSheet } from 'react-native';
+import { Button, FlatList, Text, View, StyleSheet, Touchable, TouchableOpacity } from 'react-native';
 
 const DetalhesDaConta = () => {
   const [detalhesDaConta, setDetalhesDaConta] = useState([]);
@@ -17,7 +17,7 @@ const DetalhesDaConta = () => {
       
       console.log('Token recebido em DetalhesDaConta:', token);
   
-      const resposta = await axios.get('http://ec2-3-88-108-42.compute-1.amazonaws.com:8081/product', {
+      const resposta = await axios.get('http://192.168.0.35:8081/product', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -46,7 +46,7 @@ const DetalhesDaConta = () => {
     try {
       const token = await AsyncStorage.getItem('token');
   
-      await axios.delete(`http://ec2-3-88-108-42.compute-1.amazonaws.com:8081/product/${id}`, {
+      await axios.delete(`http://192.168.0.35:8081/product/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -60,10 +60,10 @@ const DetalhesDaConta = () => {
 
   const renderItem = ({ item }) => (
     <View style={styles.item}>
-      <Text>Nome: {item.name}</Text>
-      <Text>Email: {item.email}</Text>
-      <Text>Senha: {item.senha}</Text>
-      <Text>Grupo: {item.grupo}</Text>
+      <Text style={styles.itemText}>Nome: {item.name}</Text>
+      <Text style={styles.itemText}>Email: {item.email}</Text>
+      <Text style={styles.itemText}>Senha: {item.senha}</Text>
+      <Text style={styles.itemText}>Grupo: {item.grupo}</Text>
 
       <Button title="Editar" onPress={() => handleAtualizarServico(item)} />
       <Button title="Excluir" onPress={() => handleExcluirItem(item.id)} />
@@ -96,23 +96,48 @@ const DetalhesDaConta = () => {
 
   return (
     <View style={styles.container}>
-      <Text>Bem-vindo(a): {nomeUsuario}</Text>
-      <Button title='+' onPress={handleNavigate}/>
-      {renderGroupedItems()}
+      <Text style={styles.welcomeText}>Bem-vindo(a): {nomeUsuario}</Text>
+      <TouchableOpacity style={styles.button} onPress={handleNavigate}>
+        <Text style={styles.buttonText}>+</Text>
+      </TouchableOpacity>
+      <FlatList
+        data={Object.keys(groupedItems)}
+        renderItem={({ item }) => (
+          <View style={styles.groupContainer}>
+            <Text style={styles.groupTitle}>{item}</Text>
+            <View style={styles.box}>
+              <FlatList
+                data={groupedItems[item]}
+                renderItem={renderItem}
+                keyExtractor={subItem => subItem.id.toString()}
+              />
+            </View>
+          </View>
+        )}
+        keyExtractor={(item) => item}
+      />
     </View>
   );
-
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
   },
+  itemText: {
+    fontSize: 15,
+    marginBottom: 2,
+    fontWeight: 'bold',
+  },
+  welcomeText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
   groupContainer: {
     marginBottom: 20,
   },
   groupTitle: {
+    marginTop: 20,
     fontWeight: 'bold',
     fontSize: 20,
     marginBottom: 10,
@@ -125,6 +150,22 @@ const styles = StyleSheet.create({
   },
   item: {
     marginBottom: 10,
+  },
+  button: {
+    position: 'absolute',
+    top: 25, // Distância do topo da tela
+    right: 20, // Distância da direita da tela
+    borderWidth: 1,
+    borderColor: '#000000',
+    backgroundColor: 'white',
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    borderRadius: 4,
+  },
+  buttonText: {
+    color: '#000000',
+    fontWeight: 'bold',
+    fontSize: 20,
   },
 });
 

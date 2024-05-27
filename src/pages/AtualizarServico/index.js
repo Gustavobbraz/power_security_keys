@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useState} from 'react';
-import { Alert, Text, TextInput, View, Button } from 'react-native';
+import { Alert, Text, TextInput, View, Button, StyleSheet } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 const AtualizarServico = ({ route }) => {
@@ -24,7 +24,7 @@ const AtualizarServico = ({ route }) => {
 
       console.log("ID do item:", item.id);
       //Fazendo uma solicitação à API para atualizar os dados
-      const resposta = await axios.put(`http://ec2-3-88-108-42.compute-1.amazonaws.com:8081/product/${item.id}`, updatedData, {
+      const resposta = await axios.put(`http://192.168.0.35:8081/product/${item.id}`, updatedData, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -40,24 +40,28 @@ const AtualizarServico = ({ route }) => {
     }
   };
   return (
-    <View>
-      <Text>Detalhes do Item:</Text>
+    <View style={styles.box}>
+      <Text style={styles.Text}>Detalhes do Item:</Text>
       <TextInput
+        style={styles.TextBox}
         value={updatedData.name}
         onChangeText={text => setUpdatedData({ ...updatedData, name: text })}
         placeholder="Nome"
       />
       <TextInput
+        style={styles.TextBox}
         value={updatedData.email}
         onChangeText={text => setUpdatedData({ ...updatedData, email: text })}
         placeholder="Email"
       />
       <TextInput
+        style={styles.TextBox}
         value={updatedData.senha}
         onChangeText={text => setUpdatedData({ ...updatedData, senha: text })}
         placeholder="Senha"
       />
       <TextInput
+        style={styles.TextBoxBottom}
         value={updatedData.grupo}
         onChangeText={text => setUpdatedData({ ...updatedData, grupo: text })}
         placeholder="Grupo"
@@ -68,3 +72,37 @@ const AtualizarServico = ({ route }) => {
 };
 
 export default AtualizarServico;
+
+const styles = StyleSheet.create({
+  box: {
+    borderWidth: 3,
+    borderColor: 'black',
+    borderRadius: 5,
+    padding: 10,
+    margin:2,
+  },
+  TextBox: {
+    fontWeight:"bold",
+    borderWidth: 2,
+    borderColor: 'black',
+    borderRadius: 5,
+    padding: 3,
+    marginTop: 10,
+  },
+Text:{
+    fontWeight:"bold"
+},
+TextBoxBottom:{
+    fontWeight:"bold",
+    borderWidth: 2,
+    borderColor: 'black',
+    borderRadius: 5,
+    padding: 3,
+    marginBottom: 10,
+    marginTop: 10,
+
+},
+Button:{
+    padding: 10,
+},
+});
