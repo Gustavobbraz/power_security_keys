@@ -15,7 +15,7 @@ export default function SignIn() {
 
     const fazerlogin = async () => {
         try {
-            const resposta = await axios.post('http://ec2-3-88-108-42.compute-1.amazonaws.com:8081/auth/login',{
+            const resposta = await axios.post('http://192.168.0.35:8081/auth/login',{
                 login:usuario,
                 password: senha
             });  
@@ -75,7 +75,14 @@ export default function SignIn() {
             <TouchableOpacity style={styles.buttonRegister}
                               onPress={ () => navigation.navigate('DetalhesDaConta')}>
                 <Text style={styles.resgisterText}> DetalhesContas </Text>
+
             </TouchableOpacity>
+            <TouchableOpacity style={styles.buttonRegister}
+                              onPress={ () => navigation.navigate('AtualizarServico')}>
+                <Text style={styles.resgisterText}> AtualizarServico </Text>
+            </TouchableOpacity>
+
+            
 
             
         </Animatable.View>
