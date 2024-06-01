@@ -47,15 +47,15 @@ export default function RegistrarUser() {
       <View style={styles.containerForm}>
         <Text style={styles.title}>Nome</Text>
         <TextInput
-          placeholder="Digite seu nome"
+          placeholder="Digite um nome de usuário"
           style={styles.input}
           value={nome}
           onChangeText={setNome}
         />
 
-        <Text style={styles.title}>Login</Text>
+        <Text style={styles.title}>E-mail</Text>
         <TextInput
-          placeholder="Digite seu login"
+          placeholder="Digite um E-mail"
           style={styles.input}
           value={login}
           onChangeText={setLogin}
@@ -63,7 +63,7 @@ export default function RegistrarUser() {
 
         <Text style={styles.title}>Senha</Text>
         <TextInput
-          placeholder="Digite sua senha"
+          placeholder="Digite uma senha"
           style={styles.input}
           secureTextEntry={true}
           value={password}
@@ -72,7 +72,7 @@ export default function RegistrarUser() {
 
         <Text style={styles.title}>Confirmar Senha</Text>
         <TextInput
-          placeholder="Digite sua senha novamente"
+          placeholder="Digite novamente a senha"
           style={styles.input}
           secureTextEntry={true}
           value={confirmPassword}

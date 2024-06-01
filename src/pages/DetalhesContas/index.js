@@ -1,16 +1,18 @@
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import { FlatList, Text, View, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { Button, FlatList, Text, View, StyleSheet, Touchable, TouchableOpacity } from 'react-native';
 
 const DetalhesDaConta = () => {
   const [detalhesDaConta, setDetalhesDaConta] = useState([]);
   const [nomeUsuario, setNomeUsuario] = useState('');
+  const [loading, setLoading] = useState(true); // Estado de carregamento
   const navigation = useNavigation();
   const isFocused = useIsFocused();
 
-  const buscarDetalhesDaConta = async () => {
+  const buscarDetalhesDaConta = useCallback(async () => {
+    setLoading(true); // Iniciar carregamento
     try {
       const token = await AsyncStorage.getItem('token');
       const nome = await AsyncStorage.getItem('nome');
@@ -27,19 +29,23 @@ const DetalhesDaConta = () => {
       setNomeUsuario(nome);
     } catch (erro) {
       console.error('Erro ao buscar detalhes da conta:', erro);
+    } finally {
+      setLoading(false); // Finalizar carregamento
     }
-  };
+  }, []);
 
   useEffect(() => {
-    buscarDetalhesDaConta();
-  }, [isFocused]);
+    if (isFocused) {
+      buscarDetalhesDaConta();
+    }
+  }, [isFocused, buscarDetalhesDaConta]);
 
   const handleNavigate = () => {
     navigation.navigate('CriarItem');
   };
 
-  const handleAtualizarServico = (item, token) => {
-    navigation.navigate('AtualizarServico', { item, token });
+  const handleAtualizarServico = (item) => {
+    navigation.navigate('AtualizarServico', { item });
   };
 
   const handleExcluirItem = async (id) => {
@@ -58,41 +64,39 @@ const DetalhesDaConta = () => {
     }
   };
 
-  const renderItem = ({ item }) => (
+  const renderItem = useCallback(({ item }) => (
     <View style={styles.item}>
       <Text style={styles.itemText}>Nome: {item.name}</Text>
       <Text style={styles.itemText}>Email: {item.email}</Text>
       <Text style={styles.itemText}>Senha: {item.senha}</Text>
       <Text style={styles.itemText}>Grupo: {item.grupo}</Text>
 
-      <Button title="Editar" onPress={() => handleAtualizarServico(item)} />
-      <Button title="Excluir" onPress={() => handleExcluirItem(item.id)} />
+      <TouchableOpacity 
+        style={styles.touchable} 
+        onPress={() => handleAtualizarServico(item)}
+      >
+        <Text style={styles.touchableText}>Editar</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity 
+        style={styles.touchable} 
+        onPress={() => handleExcluirItem(item.id)}
+      >
+        <Text style={styles.touchableText}>Excluir</Text>
+      </TouchableOpacity>
     </View>
-  );
+  ), [handleAtualizarServico, handleExcluirItem]);
 
   // Agrupar itens pelo nome do grupo
-  const groupedItems = detalhesDaConta.reduce((acc, currentItem) => {
-    if (!acc[currentItem.grupo]) {
-      acc[currentItem.grupo] = [];
-    }
-    acc[currentItem.grupo].push(currentItem);
-    return acc;
-  }, {});
-
-  const renderGroupedItems = () => {
-    return Object.keys(groupedItems).map(grupo => (
-      <View key={grupo} style={styles.groupContainer}>
-        <Text style={styles.groupTitle}>{grupo}</Text>
-        <View style={styles.box}>
-          <FlatList
-            data={groupedItems[grupo]}
-            renderItem={renderItem}
-            keyExtractor={item => item.id.toString()}
-          />
-        </View>
-      </View>
-    ));
-  };
+  const groupedItems = useMemo(() => {
+    return detalhesDaConta.reduce((acc, currentItem) => {
+      if (!acc[currentItem.grupo]) {
+        acc[currentItem.grupo] = [];
+      }
+      acc[currentItem.grupo].push(currentItem);
+      return acc;
+    }, {});
+  }, [detalhesDaConta]);
 
   return (
     <View style={styles.container}>
@@ -100,32 +104,37 @@ const DetalhesDaConta = () => {
       <TouchableOpacity style={styles.button} onPress={handleNavigate}>
         <Text style={styles.buttonText}>+</Text>
       </TouchableOpacity>
-      <FlatList
-        data={Object.keys(groupedItems)}
-        renderItem={({ item }) => (
-          <View style={styles.groupContainer}>
-            <Text style={styles.groupTitle}>{item}</Text>
-            <View style={styles.box}>
-              <FlatList
-                data={groupedItems[item]}
-                renderItem={renderItem}
-                keyExtractor={subItem => subItem.id.toString()}
-              />
+      {loading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        <FlatList
+          data={Object.keys(groupedItems)}
+          renderItem={({ item }) => (
+            <View style={styles.groupContainer}>
+              <Text style={styles.groupTitle}>{item}</Text>
+              <View style={styles.box}>
+                <FlatList
+                  data={groupedItems[item]}
+                  renderItem={renderItem}
+                  keyExtractor={subItem => subItem.id.toString()}
+                />
+              </View>
             </View>
-          </View>
-        )}
-        keyExtractor={(item) => item}
-      />
+          )}
+          keyExtractor={(item) => item}
+        />
+      )}
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
   },
   itemText: {
-    fontSize: 15,
+    fontSize: 19,
     marginBottom: 2,
     fontWeight: 'bold',
   },
@@ -154,18 +163,33 @@ const styles = StyleSheet.create({
   button: {
     position: 'absolute',
     top: 25, // Distância do topo da tela
-    right: 20, // Distância da direita da tela
+    right: 30, // Distância da direita da tela
     borderWidth: 1,
     borderColor: '#000000',
     backgroundColor: 'white',
     paddingHorizontal: 12,
     paddingVertical: 5,
     borderRadius: 4,
+    zIndex: 1, // Garantir que o botão esteja acima da lista
   },
   buttonText: {
     color: '#000000',
     fontWeight: 'bold',
     fontSize: 20,
+  },
+  touchable: {
+    backgroundColor: "#c40d0d",
+    width: "100%",
+    borderRadius: 4,
+    paddingVertical: 8,
+    marginTop: 14,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  touchableText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
 

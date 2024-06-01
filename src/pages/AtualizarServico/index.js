@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useState} from 'react';
-import { Alert, Text, TextInput, View, Button, StyleSheet } from 'react-native';
+import { Alert, Text, TextInput, View, Button, StyleSheet,TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 const AtualizarServico = ({ route }) => {
@@ -42,31 +42,38 @@ const AtualizarServico = ({ route }) => {
   return (
     <View style={styles.box}>
       <Text style={styles.Text}>Detalhes do Item:</Text>
+      <Text style={styles.Text}>Serviço: </Text>
       <TextInput
         style={styles.TextBox}
         value={updatedData.name}
         onChangeText={text => setUpdatedData({ ...updatedData, name: text })}
         placeholder="Nome"
       />
+      <Text style={styles.Text}>Usuário ou E-mail:</Text>
       <TextInput
         style={styles.TextBox}
         value={updatedData.email}
         onChangeText={text => setUpdatedData({ ...updatedData, email: text })}
         placeholder="Email"
       />
+      <Text style={styles.Text}>Senha: </Text>
       <TextInput
         style={styles.TextBox}
         value={updatedData.senha}
         onChangeText={text => setUpdatedData({ ...updatedData, senha: text })}
         placeholder="Senha"
       />
+      <Text style={styles.Text}>Grupo: </Text>
       <TextInput
         style={styles.TextBoxBottom}
         value={updatedData.grupo}
         onChangeText={text => setUpdatedData({ ...updatedData, grupo: text })}
         placeholder="Grupo"
       />
-      <Button title="Atualizar" onPress={atualizarDados} />
+      <TouchableOpacity style={styles.button} onPress={atualizarDados}>
+          <Text style={styles.buttonText}>Registrar</Text>
+        </TouchableOpacity>
+      
     </View>
   );
 };
@@ -82,27 +89,35 @@ const styles = StyleSheet.create({
     margin:2,
   },
   TextBox: {
-    fontWeight:"bold",
-    borderWidth: 2,
-    borderColor: 'black',
-    borderRadius: 5,
-    padding: 3,
-    marginTop: 10,
+    borderBottomWidth: 1,
+    height: 40,
+    marginBottom:12,
+    fontSize:19,
   },
 Text:{
-    fontWeight:"bold"
+    fontSize:20,
+    marginTop:12,
+    fontWeight:'bold',
 },
 TextBoxBottom:{
-    fontWeight:"bold",
-    borderWidth: 2,
-    borderColor: 'black',
-    borderRadius: 5,
-    padding: 3,
-    marginBottom: 10,
-    marginTop: 10,
+    borderBottomWidth: 1,
+    height: 40,
+    marginBottom:12,
+    fontSize:20,
+},
+button: {
+  backgroundColor: "#c40d0d",
+  width: "100%",
+  borderRadius: 4,
+  paddingVertical: 8,
+  marginTop: 14,
+  justifyContent: "center",
+  alignItems: "center",
+},
+buttonText: {
+  color: "#fff",
+  fontSize: 18,
+  fontWeight: "bold",
+},
 
-},
-Button:{
-    padding: 10,
-},
 });
