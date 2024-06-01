@@ -45,10 +45,10 @@ export default function SignIn() {
         </Animatable.View>
 
         <Animatable.View  animation="fadeInUp"  style={styles.containerForm}>
-            <Text style={styles.title}>Usuario</Text>
+            <Text style={styles.title}>E-mail</Text>
 
             <TextInput 
-                placeholder="Digite um usuario" 
+                placeholder="Digite seu E-mail" 
                 style={styles.input}
                 onChangeText={text => setUsuario(text)}
                 value={usuario}
@@ -71,19 +71,6 @@ export default function SignIn() {
                               onPress={ () => navigation.navigate('RegistrarUser')}>
                 <Text style={styles.resgisterText}> Ainda nao tem uma conta ? cadastre-se </Text>
             </TouchableOpacity>
-
-            <TouchableOpacity style={styles.buttonRegister}
-                              onPress={ () => navigation.navigate('DetalhesDaConta')}>
-                <Text style={styles.resgisterText}> DetalhesContas </Text>
-
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonRegister}
-                              onPress={ () => navigation.navigate('AtualizarServico')}>
-                <Text style={styles.resgisterText}> AtualizarServico </Text>
-            </TouchableOpacity>
-
-            
-
             
         </Animatable.View>
 

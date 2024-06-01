@@ -86,10 +86,12 @@ export default function CriarItem() {
                 value={grupo}
                 onChangeText={handleGrupo}
             />
-            <Button 
-                style={styles.Button}
-                title="Enviar" 
-                onPress={handleSubmit}/>
+            <TouchableOpacity 
+            style={styles.button} 
+            onPress={handleSubmit}
+            >
+            <Text style={styles.buttonText}>Enviar</Text>
+            </TouchableOpacity>
         </View>
     );
 
@@ -105,24 +107,38 @@ const styles = StyleSheet.create({
         margin:2,
       },
       TextBox: {
-        borderWidth: 2,
-        borderColor: 'black',
-        borderRadius: 5,
-        padding: 3,
+        borderBottomWidth: 1,
+        height: 40,
+        marginBottom:12,
+        fontSize:19,
       },
     Text:{
-        fontWeight:"bold"
+        fontSize:20,
+        marginTop:12,
+        fontWeight:'bold',
     },
     TextBoxBottom:{
-        fontWeight:"bold",
-        borderWidth: 2,
-        borderColor: 'black',
-        borderRadius: 5,
-        padding: 3,
-        marginBottom: 10,
-
+        borderBottomWidth: 1,
+        height: 40,
+        marginBottom:12,
+        fontSize:20,
     },
     Button:{
         padding: 10,
+    },
+    button:{
+        backgroundColor:"#c40d0d",
+        width: "100%",
+        borderRadius:4,
+        paddingVertical: 8,
+        marginTop: 14,
+        justifyContent:"center",
+        alignItems:"center",
+    },
+
+    buttonText:{
+        color:"#fff",
+        fontSize:18,
+        fontWeight:"bold"
     },
 });
