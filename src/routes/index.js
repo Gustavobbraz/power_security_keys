@@ -9,7 +9,7 @@ import DetalhesDaConta from "../pages/DetalhesContas";
 import DetalheServico from "../pages/DetalheServico";
 import CriarItem from "../pages/CriarItem";
 import AtualizarServico from "../pages/AtualizarServico";
-
+import RecuperarSenha from "../pages/RecuperarConta";
 
 const Stack =  createNativeStackNavigator();
 
@@ -69,6 +69,13 @@ export default function Routes(){
                component={AtualizarServico}
                options={{ headerShown: false }}
            />
+
+            <Stack.Screen
+                name="RecuperarConta"
+                component={RecuperarSenha}
+                options={{ headerShown: false }}
+            />
+
             
 
        </Stack.Navigator>

@@ -15,7 +15,7 @@ export default function SignIn() {
 
     const fazerlogin = async () => {
         try {
-            const resposta = await axios.post('http://192.168.0.35:8081/auth/login',{
+            const resposta = await axios.post('http://ec2-3-88-108-42.compute-1.amazonaws.com:8081/auth/login',{
                 login:usuario,
                 password: senha
             });  
@@ -71,6 +71,11 @@ export default function SignIn() {
                               onPress={ () => navigation.navigate('RegistrarUser')}>
                 <Text style={styles.resgisterText}> Ainda nao tem uma conta ? cadastre-se </Text>
             </TouchableOpacity>
+
+            <TouchableOpacity style={styles.buttonRegister}
+                    onPress={() => navigation.navigate('RecuperarConta')}>
+                    <Text style={styles.resgisterText}> Esqueceu sua senha? Recupere aqui </Text>
+                </TouchableOpacity>
             
         </Animatable.View>
 

@@ -19,7 +19,7 @@ const DetalhesDaConta = () => {
       
       console.log('Token recebido em DetalhesDaConta:', token);
   
-      const resposta = await axios.get('http://192.168.0.35:8081/product', {
+      const resposta = await axios.get('http://ec2-3-88-108-42.compute-1.amazonaws.com:8081/product', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -52,7 +52,7 @@ const DetalhesDaConta = () => {
     try {
       const token = await AsyncStorage.getItem('token');
   
-      await axios.delete(`http://192.168.0.35:8081/product/${id}`, {
+      await axios.delete(`http://ec2-3-88-108-42.compute-1.amazonaws.com:8081/product/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
