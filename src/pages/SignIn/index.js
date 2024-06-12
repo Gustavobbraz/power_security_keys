@@ -15,7 +15,7 @@ export default function SignIn() {
 
     const fazerlogin = async () => {
         try {
-            const resposta = await axios.post('http://ec2-3-88-108-42.compute-1.amazonaws.com:8081/auth/login',{
+            const resposta = await axios.post('https://www.authpsk-api.shop/auth/login',{
                 login:usuario,
                 password: senha
             });  

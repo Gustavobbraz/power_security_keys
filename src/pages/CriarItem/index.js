@@ -35,7 +35,7 @@ export default function CriarItem() {
             console.log("token no Criar:", token)
 
             //Enviar os dados para a lista de API com autenticação
-            const resposta = await axios.post('http://ec2-3-88-108-42.compute-1.amazonaws.com:8081/product', {
+            const resposta = await axios.post('https://www.authpsk-api.shop/product', {
                 name:name,
                 email:email,
                 senha:senha,

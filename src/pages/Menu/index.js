@@ -13,7 +13,7 @@ export default function Menu(){
     const carregarItens = async () => {
       try { 
         const token = await AsyncStorage.getItem('token');
-        const resposta = await axios.get('http://ec2-3-88-108-42.compute-1.amazonaws.com:8081/product', {
+        const resposta = await axios.get('https://www.authpsk-api.shop/product', {
           headers: {
             Authorization: 'Bearer ${token}'
           }

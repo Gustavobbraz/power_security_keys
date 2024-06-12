@@ -9,7 +9,7 @@ export default function RecuperarSenha() {
 
   const handlePasswordRecovery = async () => {
     try {
-      const response = await axios.post("http://ec2-3-88-108-42.compute-1.amazonaws.com:8081/auth/recuperar-senha", {
+      const response = await axios.post("https://www.authpsk-api.shop/auth/recuperar-senha", {
         login: login,
       });
 
